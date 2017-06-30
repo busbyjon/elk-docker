@@ -7,10 +7,11 @@
 # Run with:
 # docker run -p 5601:5601 -p 9200:9200 -p 5044:5044 -it --name elk <repo-user>/elk
 
-FROM nathancatania/phusion-arm
-MAINTAINER Sebastien Pujadas http://pujadas.net
-ENV REFRESHED_AT 2017-01-13
+FROM busbyjon/buildpacks:arm
+MAINTAINER Jon Busby // Sebastien Pujadas http://pujadas.net
+ENV REFRESHED_AT 2017-06-30
 
+RUN [ "cross-build-start" ]
 
 ###############################################################################
 #                                INSTALLATION
@@ -18,7 +19,7 @@ ENV REFRESHED_AT 2017-01-13
 
 ### install prerequisites (cURL, gosu, JDK)
 
-ENV GOSU_VERSION 1.8
+ENV GOSU_VERSION 1.10
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN set -x \
@@ -164,5 +165,7 @@ RUN chmod +x /usr/local/bin/start.sh
 
 EXPOSE 5601 9200 9300 5044
 VOLUME /var/lib/elasticsearch
+
+RUN [ "cross-build-end" ] 
 
 CMD [ "/usr/local/bin/start.sh" ]
